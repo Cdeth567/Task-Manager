@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+use App\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\ErrorHandler\Debug;
+
+require dirname(__DIR__).'/vendor/autoload.php';
+
+if (!class_exists(Application::class)) {
+    fwrite(STDERR, "Dependencies are not installed. Run composer install or docker compose up --build.\n");
+    exit(1);
+}
+
+if (file_exists(dirname(__DIR__).'/.env')) {
+    (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
+}
+
+if ($_SERVER['APP_DEBUG'] ?? false) {
+    Debug::enable();
+}
+
+$kernel = new Kernel($_SERVER['APP_ENV'] ?? 'dev', (bool) ($_SERVER['APP_DEBUG'] ?? false));
+$application = new Application($kernel);
+$application->run();

@@ -1,0 +1,38 @@
+services:
+  php:
+    build: .
+    working_dir: /app
+    command: php -S 0.0.0.0:8000 -t public public/index.php
+    volumes:
+      - .:/app
+      - composer_cache:/root/.composer/cache
+      - vendor_data:/app/vendor
+    environment:
+      APP_ENV: dev
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: task_manager
+      POSTGRES_USER: task_manager
+      POSTGRES_PASSWORD: task_manager
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U task_manager -d task_manager"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
+  composer_cache:
+  vendor_data:

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="tests/bootstrap.php" cacheDirectory=".phpunit.cache" colors="true">
+  <testsuites>
+    <testsuite name="Application Test Suite">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <server name="APP_ENV" value="test" force="true" />
+    <server name="SHELL_VERBOSITY" value="-1" />
+  </php>
+</phpunit>
