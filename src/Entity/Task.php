@@ -7,12 +7,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
-#[ORM\Table(
-    name: 'tasks',
-    indexes: [
-        new ORM\Index(name: 'IDX_TASK_STATUS', columns: ['status_id']),
-    ],
-)]
+#[ORM\Table(name: 'tasks')]
+#[ORM\Index(name: 'IDX_TASK_STATUS', columns: ['status_id'])]
 class Task
 {
     #[ORM\Id]
