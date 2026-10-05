@@ -4,7 +4,7 @@ Technical specification for Skyeng iternship
 ## Как запустить
 
 ```bash
-git clone <URL_РЕПОЗИТОРИЯ>
+git clone https://github.com/Cdeth567/Task-Manager.git
 cd task-manager-test
 docker compose up -d --build
 docker compose exec php php bin/console doctrine:migrations:migrate --no-interaction
