@@ -7,12 +7,17 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
-#[ORM\Table(name: 'tasks')]
+#[ORM\Table(
+    name: 'tasks',
+    indexes: [
+        new ORM\Index(name: 'IDX_TASK_STATUS', columns: ['status_id']),
+    ],
+)]
 class Task
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -22,18 +27,19 @@ class Task
     private ?string $description = null;
 
     #[ORM\ManyToOne(targetEntity: Status::class, inversedBy: 'tasks')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'RESTRICT')]
+    #[ORM\JoinColumn(name: 'status_id', nullable: false, onDelete: 'RESTRICT')]
     private Status $status;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $updatedAt;
 
     public function __construct(string $title, ?string $description, Status $status)
     {
         $now = new \DateTimeImmutable();
+
         $this->title = $title;
         $this->description = $description;
         $this->status = $status;
@@ -65,6 +71,7 @@ class Task
     {
         $this->status = $status;
         $this->touch();
+
         return $this;
     }
 

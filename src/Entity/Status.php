@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Status
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
     #[ORM\Column(length: 100, unique: true)]
@@ -46,6 +46,7 @@ class Status
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -57,6 +58,7 @@ class Status
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
